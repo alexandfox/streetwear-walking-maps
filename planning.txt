@@ -1,0 +1,96 @@
+models
+	- user
+		- username: String, required
+		- email/ pass (or other auth)
+		- hometown: (optional)
+		- maps: [array of map _id]
+		- favorites: [array of map _id]
+		- completed_trips: [array of map _id]
+		- timestamp: {created at , updated at }
+	
+	- map
+		- creator: [reference to user _id]
+		- city: String
+		- neighborhood: [ String ]
+		- places: [array of places]
+		- total_stops: Number
+		- time: Number
+		- likes: Number
+		- tags: [array of strings]
+		- local_rank: Number
+		- global_rank: Number
+		- guide_notes: String
+		- place_notes: [String]
+		- timestamp: {created at , updated at }
+
+	- city
+		- maps: [array of map _id]  --> ranked?
+		- location: (google maps loc)
+		- ranking: Number
+
+	- place
+		- (by Google Maps? not saved in the system?)
+		- place_notes: [String]
+
+public
+	- javascripts
+		- main.js
+		- map.js
+		- create-map.js
+
+
+routes
+	- index.js
+		- signup (get/ post)
+		- login (get/ post)
+	- map (:id)
+		- GET (pass :id)
+		- POST (--> like  --> update map, update user)
+	- create-map (pass CITY info)
+		- GET  --> pass CITY info
+		- POST  --> save new map to DB
+
+views
+	- partials
+		- logged-out-nav-bar.hbs   --> home (icon), signup/ login
+		- logged-in-nav-bar.hbs		--> home (icon), favorites, new map, profile
+	- create-map.hbs
+		- (use CITY info) --> render new map centered on that city  <create-map.js>
+		- search for location --> select location  (location must exist)
+			- --> adds location to map
+		- reorder places
+		- delete places
+		- add guide_notes (paragraph/ description)
+		- (add tags)
+		- (add place_notes) (tips for each location)
+		- complete
+			- --> generate walking time
+			- generate neighborhoods
+			- save to new map item
+		- (save ---> )
+	- index.hbs
+		- top 10 streetwear maps 	<main.js>  --> go to a map
+		- --> filter by city (AJAX, filter)
+		- select city --> create a new map
+	- layout.hbs
+		- (check if user logged in or out) --> display nav bar
+		- footer, social
+	- map.hbs
+		- generate map < map.js >
+		- generate route & markers
+		- generate place information
+		- show: creator, created at date, guide notes, places visited
+		- "like" 	--> (adds to user favorites)
+	- profile.hbs
+		- username
+		- location
+		- my maps
+			- (edit)
+			- (saved projects)
+		- my favorites
+		- completed trips
+		
+
+app.js
+	- mongodb
+	- set index route

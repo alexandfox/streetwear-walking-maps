@@ -2,6 +2,7 @@ models
 	- user
 		- username: String, required
 		- email/ pass (or other auth)
+		- avatar: String
 		- hometown: (optional)
 		- maps: [array of map _id]
 		- favorites: [array of map _id]
@@ -10,6 +11,7 @@ models
 	
 	- map
 		- creator: [reference to user _id]
+		- image: String (? how do we save this)
 		- city: String
 		- neighborhood: [ String ]
 		- places: [array of places]
@@ -17,6 +19,9 @@ models
 		- time: Number
 		- likes: Number
 		- tags: [array of strings]
+		- cloned_from: mapID
+		- number of copies: Number
+		- clones: [ mapIDs ]
 		- local_rank: Number
 		- global_rank: Number
 		- guide_notes: String
@@ -48,7 +53,7 @@ routes
 		- POST (--> like  --> update map, update user)
 	- create-map (pass CITY info)
 		- GET  --> pass CITY info
-		- POST  --> save new map to DB
+		- POST  --> save new map to DB  (render map page)
 
 views
 	- partials

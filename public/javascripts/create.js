@@ -1,19 +1,22 @@
 // new map with places
 function initialize() {
   const ironhackBCN = {       // update to user's city
-  	lat: 41.3977381,
-  	lng: 2.190471916};
+    lat: 41.3977381,
+    lng: 2.190471916
+  };
 
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
   var markers = [];
-  var map = new google.maps.Map(document.getElementById('new-map'), 
+  var map = new google.maps.Map(document.getElementById('new-map'),
     {
       zoom: 5,
       center: ironhackBCN
-  });
+    });
 
   var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-33.8902, 151.1759),
-      new google.maps.LatLng(-33.8474, 151.2631));
+    new google.maps.LatLng(-33.8902, 151.1759),
+    new google.maps.LatLng(-33.8474, 151.2631));
   map.fitBounds(defaultBounds);
 
   // Create the search box and link it to the UI element.
@@ -22,10 +25,9 @@ function initialize() {
 
   var searchBox = new google.maps.places.SearchBox(input);
 
-  // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
   // pick list. Retrieve the matching places for that item.
-  google.maps.event.addListener(searchBox, 'places_changed', function() {
+  google.maps.event.addListener(searchBox, 'places_changed', function () {
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -63,36 +65,90 @@ function initialize() {
     var infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
 
-    places.forEach( place => {
-      service.getDetails(place, function(place, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          markers.forEach( (marker, index) => {
-            google.maps.event.addListener(marker, 'click', function() {
-              infowindow.setContent(`<form action="/addPlace" method="POST" class="place-details"><strong>` + places[index].name + '</strong><br>' +
-                // 'Place ID: ' + place.place_id + '<br>' +
-                places[index].formatted_address + '<br>' + 
-                places[index].rating + '<br>' +
-                `<button type="submit">Add Stop</button></form>` +
-                '</div>');
-              infowindow.open(map, this);
-              document.querySelectorAll(".place-details").forEach(
-                button => { button.onsubmit = function(event) {
-                  event.preventDefault(); 
-              };
-              })
+    function setMarkerForm(infowindow, place, placeID) {
+      return new Promise((res, rej) => {
+        infowindow.setContent(`<form action="/addPlace" method="POST" class="place-details" id="add-${placeID}"><strong>` + place.name + '</strong><br>' +
+        // 'Place ID: ' + place.place_id + '<br>' +
+        place.formatted_address + '<br>' +
+        place.rating + '<br>' +
+        `<button type="submit">Add Stop</button></form>` +
+        '</div>');
+        res();
+      }) 
+    }
 
-            });
-          })
+    places.forEach(place => {
+      service.getDetails(place, function (place, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          markers.forEach((marker, index) => {
+            var placeID = places[index].place_id
+            google.maps.event.addListener(marker, 'click', function () {
+              infowindow.open(map, this);
+              setMarkerForm(infowindow, places[index], placeID).then(res => {
+                console.log(document.querySelector(".place-details"))
+                // document.querySelector(".place-details").onsubmit = function (event) { event.preventDefault(); };
+                var addForms = document.querySelectorAll(".place-details");addForms.forEach( form => form.onsubmit = function(event) {
+                  event.preventDefault();
+                })
+              })
+            })
+          });
         }
-      });
+      })
     })
   });
 
   // Bias the SearchBox results towards places that are within the bounds of the
   // current map's viewport.
-  google.maps.event.addListener(map, 'bounds_changed', function() {
+  google.maps.event.addListener(map, 'bounds_changed', function () {
     var bounds = map.getBounds();
     searchBox.setBounds(bounds);
+  });
+
+  // DIRECTIONS
+  directionsDisplay.setMap(map);
+
+  document.getElementById('update-route').addEventListener('click', function() {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+  });
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+  var checkboxArray = document.getElementById('waypoints');
+  for (var i = 0; i < checkboxArray.length; i++) {
+    if (checkboxArray.options[i].selected) {
+      waypts.push({
+        location: checkboxArray[i].value,
+        stopover: true
+      });
+    }
+  }
+
+  directionsService.route({
+    origin: document.getElementById('start').value,
+    destination: document.getElementById('end').value,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: 'DRIVING'
+  }, function(response, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+            '</b><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
   });
 }
 
@@ -146,10 +202,10 @@ function handleDrop(e) {
     //this.innerHTML = e.dataTransfer.getData('text/html');
     this.parentNode.removeChild(dragSrcEl);
     var dropHTML = e.dataTransfer.getData('text/html');
-    this.insertAdjacentHTML('beforebegin',dropHTML);
+    this.insertAdjacentHTML('beforebegin', dropHTML);
     var dropElem = this.previousSibling;
     addDnDHandlers(dropElem);
-    
+
   }
   this.classList.remove('over');
   return false;

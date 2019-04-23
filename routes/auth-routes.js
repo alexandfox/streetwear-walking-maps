@@ -46,7 +46,7 @@ passport.use(
 authRoutes.get("/login", (req, res, next) => {
   res.render("auth/login");
 });
-
+var login = false;
 authRoutes.post(
   "/login",
   passport.authenticate("local", {

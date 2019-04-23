@@ -57,7 +57,7 @@ routes
 
 views
 	- partials
-		- logged-out-nav-bar.hbs   --> home (icon), signup/ login
+		- logged-out-nav-bar.hbs   --> home (icon), new map, signup/ login
 		- logged-in-nav-bar.hbs		--> home (icon), favorites, new map, profile
 	- create-map.hbs
 		- (use CITY info) --> render new map centered on that city  <create-map.js>

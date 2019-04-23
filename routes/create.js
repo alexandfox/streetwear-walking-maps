@@ -6,8 +6,11 @@ const placesAPI = axios.create({
     baseURL: 'https://maps.googleapis.com/maps/api/place/findplacefromtext/'
 });
 
-
-
+router.post("/addPlace", (req, res) => {
+  let name    = req.body.name;
+  let place_id = req.body.place_id;
+  res.send(`loc name: ${name}, id: ${place_id}`);
+})
 
 
 

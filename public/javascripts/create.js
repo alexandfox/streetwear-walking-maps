@@ -68,18 +68,25 @@ function initialize() {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           markers.forEach( (marker, index) => {
             google.maps.event.addListener(marker, 'click', function() {
-              infowindow.setContent('<div><strong>' + places[index].name + '</strong><br>' +
+              infowindow.setContent(`<form action="/addPlace" method="POST" class="place-details"><strong>` + places[index].name + '</strong><br>' +
                 // 'Place ID: ' + place.place_id + '<br>' +
                 places[index].formatted_address + '<br>' + 
-                places[index].rating + '</div>');
+                places[index].rating + '<br>' +
+                `<button type="submit">Add Stop</button></form>` +
+                '</div>');
               infowindow.open(map, this);
+              document.querySelectorAll(".place-details").forEach(
+                button => { button.onsubmit = function(event) {
+                  event.preventDefault(); 
+              };
+              })
+
             });
           })
         }
       });
     })
   });
-  // [END region_getplaces]
 
   // Bias the SearchBox results towards places that are within the bounds of the
   // current map's viewport.
@@ -90,6 +97,9 @@ function initialize() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
 
 
 var dragSrcEl = null;
@@ -113,7 +123,6 @@ function handleDragOver(e) {
 
   return false;
 }
-
 function handleDragEnter(e) {
   // this / e.target is the current hover target.
 }
@@ -164,7 +173,6 @@ function addDnDHandlers(elem) {
   elem.addEventListener('dragend', handleDragEnd, false);
 
 }
-
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);
 

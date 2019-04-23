@@ -9,6 +9,7 @@ const placesAPI = axios.create({
 router.post("/addPlace", (req, res) => {
   let name    = req.body.name;
   let place_id = req.body.place_id;
+  console.log(`loc name: ${name}, id: ${place_id}`)
   res.send(`loc name: ${name}, id: ${place_id}`);
 })
 

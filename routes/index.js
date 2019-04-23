@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/create', (req, res, next) => {
-  res.render('create');
+  res.render('create');   // pass city and user info
 });
 
 // const createMap = require('./create');

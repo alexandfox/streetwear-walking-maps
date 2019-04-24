@@ -13,8 +13,6 @@ router.post("/addPlace", (req, res) => {
   res.send(`loc name: ${name}, id: ${place_id}`);
 })
 
-
-
 // router.get('/create', (req, res, next) => {
 //   res.render('create');
 // });

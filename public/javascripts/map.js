@@ -14,17 +14,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	const mapObject = JSON.parse(mapJSON)
 	console.log(mapObject.neighborhood)
 
-	// var waypts = [];
-	// var checkboxArray = document.getElementById('waypoints');
-	// for (var i = 0; i < checkboxArray.length; i++) {
-	// 	if (checkboxArray.options[i].selected) {
-	// 		waypts.push({
-	// 			location: checkboxArray[i].value,
-	// 			stopover: true
-	// 		});
-	// 	}
-	// }
-
 	directionsService.route(map, function(response, status) {
 		if (status === 'OK') {
 			directionsDisplay.setDirections(response);

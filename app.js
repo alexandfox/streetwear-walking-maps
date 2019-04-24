@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
 const app = express();
-const mapModel = require("./models/map")
+const mapModel = require("./models/map");
 
 mongoose
   .connect("mongodb://localhost/streetwear-walking-maps", {
@@ -32,6 +32,7 @@ app.locals.title = "streetwear walking maps";
 
 app.use(
   session({
+    cookie: { maxAge: 180000 },
     secret: "our-passport-local-strategy-app",
     resave: true,
     saveUninitialized: true

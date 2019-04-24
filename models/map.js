@@ -1,27 +1,27 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const User = require("../models/user")
+const User = require("../models/user");
 
 const mapSchema = new Schema(
   {
-		map: Object,
-		user: { type : Schema.Types.ObjectId, ref: 'User' },
-		image: String,
-		city: String,
-		neighborhood: [String],
-		places: [Object],
-		total_stops: Number,
-		total_time: Number,
-		favorites: [{ type : Schema.Types.ObjectId, ref: 'User' }],
-		total_favorites: Number,
-		tags: [String],
-		clone_from: { type : Schema.Types.ObjectId, ref: 'Map' },
-		number_of_clones: Number,
-		clones: [{ type : Schema.Types.ObjectId, ref: 'Map' }],
-		local_rank: Number,
-		global_rank: Number,
-		guide_notes: String,
-		place_notes: [String],
+    map: Object,
+    user: { type: Schema.Types.ObjectId, ref: "User" },
+    image: String,
+    city: String,
+    neighborhood: [String],
+    places: [Object],
+    total_stops: Number,
+    total_time: Number,
+    favorites: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    total_favorites: Number,
+    tags: [String],
+    clone_from: { type: Schema.Types.ObjectId, ref: "Map" },
+    number_of_clones: Number,
+    clones: [{ type: Schema.Types.ObjectId, ref: "Map" }],
+    local_rank: Number,
+    global_rank: Number,
+    guide_notes: String,
+    place_notes: [String]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -68,7 +68,11 @@ var japanMap = new Map({
 	local_rank: 1,
 	global_rank: 1,
 	guide_notes: "Start and explore through Shibuya",
-	place_notes: [],
+	place_notes: []
+  },
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
+  }
 })
 
 // ADD Japan Map
@@ -91,8 +95,6 @@ var japanMap = new Map({
 //   })
 //   .then(map => { console.log('The map was updated: ' + map )})
 //   .catch(err => { console.log('An error occured:', err) });
-
-
 
 
 /* map object:

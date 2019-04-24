@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
 const app = express();
+const mapModel = require("./models/map")
 
 mongoose
   .connect("mongodb://localhost/streetwear-walking-maps", {

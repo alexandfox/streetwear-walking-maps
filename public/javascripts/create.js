@@ -1,3 +1,15 @@
+// DOM objects
+const placesList = document.getElementById("places-list")
+
+function addPlaceToList(placeID, placeName) {
+  var newPlace = document.createElement("li")
+  newPlace.setAttribute("class", "column draggable")
+  newPlace.setAttribute("id", placeID)
+  newPlace.textContent = placeName
+  placesList.appendChild(newPlace)
+}
+
+
 // new map with places
 function initialize() {
   const ironhackBCN = {       // update to user's city
@@ -86,9 +98,9 @@ function initialize() {
               infowindow.open(map, this);
               setMarkerForm(infowindow, places[index], placeID).then(res => {
                 console.log(document.querySelector(".place-details"))
-                // document.querySelector(".place-details").onsubmit = function (event) { event.preventDefault(); };
                 var addForms = document.querySelectorAll(".place-details");addForms.forEach( form => form.onsubmit = function(event) {
                   event.preventDefault();
+                  addPlaceToList(placeID, places[index].name)
                 })
               })
             })

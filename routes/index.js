@@ -30,7 +30,7 @@ router.get("/map/:id", (req, res, next) => {
       if (!map) {
         return res.status(404).render("not-found");
       }
-      res.render("map", { map: JSON.stringify(map) });
+      res.render('map', {hbsMap: map, map: JSON.stringify(map)})
     })
     .catch(next);
 });

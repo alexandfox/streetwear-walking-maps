@@ -1,5 +1,6 @@
 // DOM objects
 const placesList = document.getElementById("places-list")
+const timeDisplay = document.getElementById("total-time")
 
 function addPlaceToList(placeID, placeName) {
   var newPlace = document.createElement("li")
@@ -9,6 +10,15 @@ function addPlaceToList(placeID, placeName) {
   placesList.appendChild(newPlace)
 }
 
+function placeDivToEndpoint(div) {
+  var placeID = div.getAttribute("id")
+  return {'placeId': placeID}
+}
+
+function placeDivToWaypoint(div) {
+  var placeID = div.getAttribute("id")
+  return {location: {'placeId': placeID}}
+}
 
 // new map with places
 function initialize() {
@@ -120,44 +130,59 @@ function initialize() {
   // DIRECTIONS
   directionsDisplay.setMap(map);
 
-  document.getElementById('update-route').addEventListener('click', function() {
+  document.getElementById('update-directions').addEventListener('click', function() {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var stopsList = document.querySelectorAll(".draggable")
+  var origin = placeDivToEndpoint(stopsList[0])
+  var destination = placeDivToEndpoint(stopsList[stopsList.length-1])
+  // console.log("stopsList[0] is: ", stopsList[0])
+  // console.log("stopsList[stopsList.length-1] ", stopsList[stopsList.length-1])
+
+  // var waypts = [{location: {'placeId': "ChIJHTQ2_qWMGGARK_lj8y-fYRE"}},
+	// 		{location: {'placeId': "ChIJCzp6MKGMGGARHw84njJix8c"}}];
   var waypts = [];
-  var checkboxArray = document.getElementById('waypoints');
-  for (var i = 0; i < checkboxArray.length; i++) {
-    if (checkboxArray.options[i].selected) {
-      waypts.push({
-        location: checkboxArray[i].value,
-        stopover: true
-      });
+  stopsList.forEach( (divElem, index) => {
+    if (index>0 && index < (stopsList.length -1)) {
+      // console.log("new stop: ", divElem)
+      waypoint = placeDivToWaypoint(divElem)
+      waypts.push(waypoint);
+      // console.log("stops: ", waypts)
     }
-  }
+  })
 
   directionsService.route({
-    origin: document.getElementById('start').value,
-    destination: document.getElementById('end').value,
+    origin: origin,
+    destination: destination,
     waypoints: waypts,
-    optimizeWaypoints: true,
-    travelMode: 'DRIVING'
+    optimizeWaypoints: false,
+    travelMode: 'WALKING'
   }, function(response, status) {
     if (status === 'OK') {
       directionsDisplay.setDirections(response);
+      var totalTime = 0;
+      response.routes[0].legs.forEach( leg => {
+        totalTime += leg.duration.value
+      })
+
+      var timeInMinutes = Math.round(totalTime/60)
+      timeDisplay.textContent = timeInMinutes;
+      console.log("route response: ", response)
       var route = response.routes[0];
-      var summaryPanel = document.getElementById('directions-panel');
-      summaryPanel.innerHTML = '';
+      // var summaryPanel = document.getElementById('directions-panel');
+      // summaryPanel.innerHTML = '';
       // For each route, display summary information.
-      for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-            '</b><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      }
+      // for (var i = 0; i < route.legs.length; i++) {
+      //   var routeSegment = i + 1;
+      //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+      //       '</b><br>';
+      //   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+      //   summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+      //   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      // }
     } else {
       window.alert('Directions request failed due to ' + status);
     }

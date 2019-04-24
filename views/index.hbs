@@ -1,3 +1,20 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<a href="/create">create</a>
+<div class="top_homePgae">
+    <h1>{{title}}</h1>
+    <label for="city">Find popular maps for</label>
+    <input type="text" name="Paris">
+    <p>Or look for maps <button>Near You!!</button></p>
+</div>
+<div class="main_homePage">
+    <h2>Most popular maps of all time!</h2>
+    {{#each mapData}}
+    <div class="map">
+        <img src="{{this.image}}" alt="Map disappear">
+        <p>stops:{{this.total_stops}}</p>
+        <p>time:{{this.total_time}}mn</p>
+        <p>places:{{this.places}}</p>
+        <div class="underPicture"><i class="far fa-heart"></i>
+            <p>creator: </p>
+        </div>
+    </div>
+    {{/each}}
+</div>

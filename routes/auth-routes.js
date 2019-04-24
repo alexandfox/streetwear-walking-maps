@@ -46,15 +46,21 @@ passport.use(
 authRoutes.get("/login", (req, res, next) => {
   res.render("auth/login");
 });
-var login = false;
+
+passport.authenticate("local", {
+  failureFlash: "Invalid username or password."
+});
+passport.authenticate("local", { successFlash: "Welcome!" });
+
 authRoutes.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/",
+    successFlash: true,
     failureRedirect: "/login",
+    failureFlash: true
     // failureFlash: true,
     // passReqToCallBack: truex,
-    login: true
   })
 );
 

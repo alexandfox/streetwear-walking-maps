@@ -6,19 +6,24 @@ function initMap() {
 		center: {lat: 41.85, lng: -87.65}
 	});
 	directionsDisplay.setMap(displayMap);
+	calculateAndDisplayRoute(directionsService, directionsDisplay)
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-	var waypts = [];
-	var checkboxArray = document.getElementById('waypoints');
-	for (var i = 0; i < checkboxArray.length; i++) {
-		if (checkboxArray.options[i].selected) {
-			waypts.push({
-				location: checkboxArray[i].value,
-				stopover: true
-			});
-		}
-	}
+	const mapJSON = document.getElementById("map-object").value;
+	const mapObject = JSON.parse(mapJSON)
+	console.log(mapObject.neighborhood)
+
+	// var waypts = [];
+	// var checkboxArray = document.getElementById('waypoints');
+	// for (var i = 0; i < checkboxArray.length; i++) {
+	// 	if (checkboxArray.options[i].selected) {
+	// 		waypts.push({
+	// 			location: checkboxArray[i].value,
+	// 			stopover: true
+	// 		});
+	// 	}
+	// }
 
 	directionsService.route(map, function(response, status) {
 		if (status === 'OK') {

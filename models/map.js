@@ -73,7 +73,7 @@ var japanMap = new Map({
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
-})
+)
 
 // ADD Japan Map
 // japanMap.save() 

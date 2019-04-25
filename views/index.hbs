@@ -1,20 +1,25 @@
-<div class="top_homePgae">
+{{!-- <div class="top_homePgae">
     <h1>{{title}}</h1>
     <label for="city">Find popular maps for</label>
     <input type="text" name="Paris">
     <p>Or look for maps <button>Near You!!</button></p>
-</div>
+</div> --}}
 <div class="main_homePage">
     <h2>Most popular maps of all time!</h2>
     {{#each mapData}}
-    <div class="map">
-        <img src="{{this.image}}" alt="Map disappear">
-        <p>stops:{{this.total_stops}}</p>
-        <p>time:{{this.total_time}}mn</p>
-        <p>places:{{this.places}}</p>
-        <div class="underPicture"><i class="far fa-heart"></i>
-            <p>creator: </p>
+        <div class="list-item">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Berkeley,CA&zoom=14&size=400x400&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk
+    ">      <div class="list-info">
+                <h1 class="list-city">{{this.city}}</h1>
+                <h3 class="list-time">Total time: {{this.total_time}} min.</3>
+                <p>Stops: {{this.total_stops}}</p>
+                <p>Places: {{this.places}}</p>
+                <div class="list-favorites">
+                    <i class="far fa-heart"> {{this.total_favorites}}</i>
+                    <p class="favorites-count"> </p>
+                </div>
+                <p>Creator: {{this.user.username}}</p>
+            </div>            
         </div>
-    </div>
     {{/each}}
 </div>

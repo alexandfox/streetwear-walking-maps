@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const MapModel = require("../models/map");
+const User = require("../models/user")
 const db = "mongodb://localhost/streetwear-walking-maps";
 
 router.get("/", (req, res, next) => {
   MapModel.find().then(mapData => {
     console.log(mapData, "map data ");
-
     res.render("index", { mapData });
   });
 });

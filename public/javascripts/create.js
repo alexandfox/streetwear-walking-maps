@@ -75,10 +75,51 @@ function geocodeAddress(geocoder, resultsMap) {
     console.log("lat/lng: ", results[0].geometry.location)
     if (status === 'OK') {
       resultsMap.setCenter(results[0].geometry.location);
+      return results[0].geometry.location;
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
   });
+}
+
+function createImageFromMap( newMap ) {
+  var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x400&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk&markers=color:red"
+  var geocoder = new google.maps.Geocoder();
+
+  var placeIDs = [];
+  cols.forEach( col => {
+    placeId = col.getAttribute("id")
+    placeIDs.push(placeId)
+  })
+
+  placeIDs.forEach( place => {
+    geocodePlaceID(geocoder, place)
+  })
+
+  // path=pathStyles|pathLocation1|pathLocation2|
+  function geocodePlaceID(geocoder, placeID) {
+    geocoder.geocode({'placeId': placeID}, function(results, status) {
+      if (status === 'OK') {
+        var lat = results[0].geometry.location.lat()
+        var lng = results[0].geometry.location.lng()
+        console.log(`${lat}, ${lng}`)
+        var latlng = `|${lat}, ${lng}`
+        imageURL += latlng
+        console.log("imageURL: ", imageURL)
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    })
+  }
+}
+
+// FINALIZE MAP
+finalizeButton.onclick = () => {
+  createImageFromMap(newMap);
+  console.log("created image ^")
+  submitMapInput.setAttribute("value", JSON.stringify(newMap))
+  window.confirm("ready to submit?")
+  // enable submit button
 }
 
 
@@ -337,10 +378,3 @@ function addDnDHandlers(elem) {
 }
 
 
-
-// FINALIZE MAP
-finalizeButton.onclick = () => {
-  submitMapInput.setAttribute("value", JSON.stringify(newMap))
-  window.alert("ready to submit?")
-  // enable submit button
-}

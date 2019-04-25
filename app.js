@@ -13,6 +13,8 @@ const path = require("path");
 const app = express();
 const mapModel = require("./models/map");
 
+// process.env.MONGODB_URI
+
 mongoose
   .connect("mongodb://localhost/streetwear-walking-maps", {
     useNewUrlParser: true

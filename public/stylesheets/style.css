@@ -78,32 +78,32 @@ a {
   border: 2px solid #666666;  */
   }
 
-.column.dragElem {
-  opacity: 0.4; }
+/* .column.dragElem {
+  opacity: 0.4; } */
 
 .column.over {
   border-top: 2px solid blue; }
 
-.close {
+.removeStop {
   /* cursor: pointer;
   position: absolute; */
   padding: 12px 16px;
   opacity: 0.4;
 }
 
-.close:hover {
+.removeStop:hover {
   opacity: 1;
 }
-.close:before, .close:after {
+.removeStop:before, .removeStop:after {
   content: ' ';
   /* height: 33px;
   width: 2px; */
   background-color: #333;
 }
-.close:before {
+.removeStop:before {
   transform: rotate(45deg);
 }
-.close:after {
+.removeStop:after {
   transform: rotate(-45deg);
 }
 

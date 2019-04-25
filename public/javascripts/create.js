@@ -4,6 +4,8 @@ const timeDisplay = document.getElementById("total-time")
 const finalizeButton = document.getElementById("finalize-button")
 const submitMapInput = document.getElementById("submit-map-input")
 
+var removeButtons = document.querySelectorAll(".removeStop");
+
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);
 
@@ -32,7 +34,7 @@ function addPlaceToList(placeID, placeName) {
   var newPlace = document.createElement("li")
   newPlace.setAttribute("class", "column draggable")
   newPlace.setAttribute("id", placeID)
-  newPlace.innerHTML = `<header class="list-name">${placeName}</header>`
+  newPlace.innerHTML = `<header class="list-name">${placeName}</header><span class="removeStop">x</span>`
   placesList.appendChild(newPlace)
 }
 
@@ -49,6 +51,19 @@ function placeDivToWaypoint(div) {
 function placeDivToPlaceName(div) {
   var placeName = div.innerHTML
   return placeName
+}
+
+function removeStop( button ) {
+  var stop = button.parentNode;
+  placesList.removeChild(stop);
+}
+
+function updateRemoveButtons() {
+  removeButtons = document.querySelectorAll(".removeStop")
+  removeButtons.forEach( (button) => {
+    button.addEventListener( "click", function() {
+      removeStop(button)
+  })})
 }
 
 // new map with places
@@ -138,12 +153,13 @@ function initialize() {
             google.maps.event.addListener(marker, 'click', function () {
               infowindow.open(map, this);
               setMarkerForm(infowindow, places[index], placeID).then(res => {
-                console.log(document.querySelector(".place-details"))
                 var addForms = document.querySelectorAll(".place-details");addForms.forEach( form => form.onsubmit = function(event) {
                   event.preventDefault();
                   addPlaceToList(placeID, places[index].name)
+
                   cols = document.querySelectorAll('#places-list .column');
                   [].forEach.call(cols, addDnDHandlers);
+                  updateRemoveButtons();
                 })
               })
             })
@@ -189,9 +205,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var places = [];
   stopsList.forEach( (divElem, index) => {
     place = placeDivToPlaceName(divElem)
-    console.log("place: ", place)
     places.push(place);
-    console.log("places: ", places)
   })
 
   newMap.map = {
@@ -220,6 +234,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       window.alert('Directions request failed due to ' + status);
     }
   });
+
+  updateRemoveButtons();
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -303,28 +319,6 @@ function addDnDHandlers(elem) {
 // FINALIZE MAP
 finalizeButton.onclick = () => {
   submitMapInput.setAttribute("value", JSON.stringify(newMap))
-
-  /*
-  image: "",
-    city: "",
-    neighborhood: [],
-        tags: [],
-    guide_notes: "",
-    place_notes: "",
-  /*
-
-  /*
-    const map = {}
-  const image = ""
-  const city = ""
-  const neighborhood = []
-  const places = [{}]
-  const total_stops = places.length;
-  const total_time = null;
-  const tags = [];
-  const guide_notes = "";
-  const place_notes = "";
-  */
   window.alert("ready to submit?")
   // enable submit button
 }

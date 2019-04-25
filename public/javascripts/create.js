@@ -1,6 +1,29 @@
 // DOM objects
 const placesList = document.getElementById("places-list")
 const timeDisplay = document.getElementById("total-time")
+const finalizeButton = document.getElementById("finalize-button")
+const submitMapInput = document.getElementById("submit-map-input")
+
+var newMap = {
+  map: {},
+  user: "5cc043158151450c84757422",
+  image: "",
+  city: "",
+  neighborhood: [],
+  places: [],
+  total_stops: null,
+  total_time: null,
+  tags: [],
+  guide_notes: "",
+  place_notes: "",
+  favorites: [],
+  total_favorites: 0,
+  clone_from: null,
+  number_of_clones: 0,
+  clones: [],
+  local_rank: null,
+  global_rank: null,
+};
 
 function addPlaceToList(placeID, placeName) {
   var newPlace = document.createElement("li")
@@ -18,6 +41,11 @@ function placeDivToEndpoint(div) {
 function placeDivToWaypoint(div) {
   var placeID = div.getAttribute("id")
   return {location: {'placeId': placeID}}
+}
+
+function placeDivToPlaceName(div) {
+  var placeName = div.innerHTML
+  return placeName
 }
 
 // new map with places
@@ -141,7 +169,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var destination = placeDivToEndpoint(stopsList[stopsList.length-1])
   // console.log("stopsList[0] is: ", stopsList[0])
   // console.log("stopsList[stopsList.length-1] ", stopsList[stopsList.length-1])
-
   // var waypts = [{location: {'placeId': "ChIJHTQ2_qWMGGARK_lj8y-fYRE"}},
 	// 		{location: {'placeId': "ChIJCzp6MKGMGGARHw84njJix8c"}}];
   var waypts = [];
@@ -154,13 +181,26 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   })
 
-  directionsService.route({
+  var places = [];
+  stopsList.forEach( (divElem, index) => {
+    place = placeDivToPlaceName(divElem)
+    console.log("place: ", place)
+    places.push(place);
+    console.log("places: ", places)
+  })
+
+  newMap.map = {
     origin: origin,
     destination: destination,
     waypoints: waypts,
     optimizeWaypoints: false,
     travelMode: 'WALKING'
-  }, function(response, status) {
+  }
+
+  newMap.places = places;
+  newMap.total_stops = places.length;
+
+  directionsService.route(newMap.map, function(response, status) {
     if (status === 'OK') {
       directionsDisplay.setDirections(response);
       var totalTime = 0;
@@ -170,19 +210,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
       var timeInMinutes = Math.round(totalTime/60)
       timeDisplay.textContent = timeInMinutes;
-      console.log("route response: ", response)
-      var route = response.routes[0];
-      // var summaryPanel = document.getElementById('directions-panel');
-      // summaryPanel.innerHTML = '';
-      // For each route, display summary information.
-      // for (var i = 0; i < route.legs.length; i++) {
-      //   var routeSegment = i + 1;
-      //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-      //       '</b><br>';
-      //   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-      //   summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-      //   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      // }
+      newMap.total_time = timeInMinutes;
     } else {
       window.alert('Directions request failed due to ' + status);
     }
@@ -192,9 +220,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
-
-
-
+// REORDER ITEMS
 var dragSrcEl = null;
 
 function handleDragStart(e) {
@@ -269,3 +295,32 @@ function addDnDHandlers(elem) {
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);
 
+
+// FINALIZE MAP
+finalizeButton.onclick = () => {
+  submitMapInput.setAttribute("value", JSON.stringify(newMap))
+
+  /*
+  image: "",
+    city: "",
+    neighborhood: [],
+        tags: [],
+    guide_notes: "",
+    place_notes: "",
+  /*
+
+  /*
+    const map = {}
+  const image = ""
+  const city = ""
+  const neighborhood = []
+  const places = [{}]
+  const total_stops = places.length;
+  const total_time = null;
+  const tags = [];
+  const guide_notes = "";
+  const place_notes = "";
+  */
+  window.alert("ready to submit?")
+  // enable submit button
+}

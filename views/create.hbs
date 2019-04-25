@@ -13,11 +13,21 @@
 	<ul id="places-list" class="draggable-list">
 		{{!-- <li class="column draggable"><header>A</header></li>
 		<li class="column draggable"><header>B</header></li> --}}
+		{{!-- <li class="column draggable" id="ChIJHTQ2_qWMGGARK_lj8y-fYRE">start</li>
+		<li class="column draggable" id="ChIJCzp6MKGMGGARHw84njJix8c">place</li>
+		<li class="column draggable" id="ChIJU9Ydb2GLGGAR5UIVmYONRiU">C.E</li>
+		<li class="column draggable" id="ChIJ83ZdS2CLGGAREqhGUhmJ9pM">OFF-WHITE™ TOKYO “SOMETHING &amp; ASSOCIATES” c/o OFF-WHITE™ TOKYO</li> --}}
 		<li class="column draggable" id="ChIJHTQ2_qWMGGARK_lj8y-fYRE">start</li>
 		<li class="column draggable" id="ChIJCzp6MKGMGGARHw84njJix8c">place</li>
 		<li class="column draggable" id="ChIJU9Ydb2GLGGAR5UIVmYONRiU">C.E</li>
 		<li class="column draggable" id="ChIJ83ZdS2CLGGAREqhGUhmJ9pM">OFF-WHITE™ TOKYO “SOMETHING &amp; ASSOCIATES” c/o OFF-WHITE™ TOKYO</li>
 	</ul>
 </div>
+
+<form id="save-map-container" action="/create" method="POST">
+	<input id="submit-map-input" name="newMap" type="hidden" value="">
+	<button id="finalize-button" type="button">Finalize</button>
+	<input id="save-map" type="submit" value="Submit">
+</form>
 
 <script src="/javascripts/create.js"></script>

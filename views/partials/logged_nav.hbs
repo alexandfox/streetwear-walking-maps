@@ -1,17 +1,18 @@
-{{#if login}}
+{{#if isLoggedIn}}
 <nav class="log-nav">
     <a class="home" href="/">
         <i class="fas fa-home"></i></a>
     <div class="navLeft_content">
-        <a href="/create">New Map</a>
-        <a href="/profile">Profile</a></div>
+        <a href="/create">+ Create New Map</a>
+        <a href="#">Profile</a></div>
 </nav>
-{{/if}}
+{{else}}
 <nav class="log-nav">
     <a class="home" href="/">
         <i class="fas fa-home"></i></a>
     <div class="navLeft_content">
-        <a href="/create">New Map</a>
-        <a href="/signup">SignIn/Login</a>
+        <a href="/create">+ Create New Map</a>
+        <a href="/login">Login</a>
     </div>
 </nav>
+{{/if}}

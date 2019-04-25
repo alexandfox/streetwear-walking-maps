@@ -7,7 +7,10 @@ const timeDisplay = document.getElementById("total-time")
 const finalizeButton = document.getElementById("finalize-button")
 const submitMapInput = document.getElementById("submit-map-input")
 
+const submitMapButton = document.getElementById("save-map")
+
 var removeButtons = document.querySelectorAll(".removeStop");
+var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x400&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk&markers=color:red";
 
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);
@@ -43,12 +46,12 @@ function addPlaceToList(placeID, placeName) {
 
 function placeDivToEndpoint(div) {
   var placeID = div.getAttribute("id")
-  return {'placeId': placeID}
+  return { 'placeId': placeID }
 }
 
 function placeDivToWaypoint(div) {
   var placeID = div.getAttribute("id")
-  return {location: {'placeId': placeID}}
+  return { location: { 'placeId': placeID } }
 }
 
 function placeDivToPlaceName(div) {
@@ -56,21 +59,22 @@ function placeDivToPlaceName(div) {
   return placeName
 }
 
-function removeStop( button ) {
+function removeStop(button) {
   var stop = button.parentNode;
   placesList.removeChild(stop);
 }
 
 function updateRemoveButtons() {
   removeButtons = document.querySelectorAll(".removeStop")
-  removeButtons.forEach( (button) => {
-    button.addEventListener( "click", function() {
+  removeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
       removeStop(button)
-  })})
+    })
+  })
 }
 
 function geocodeAddress(geocoder, resultsMap) {
-  geocoder.geocode({'address': city}, function(results, status) {
+  geocoder.geocode({ 'address': city }, function (results, status) {
     console.log("geocode result: ", results)
     console.log("lat/lng: ", results[0].geometry.location)
     if (status === 'OK') {
@@ -82,46 +86,62 @@ function geocodeAddress(geocoder, resultsMap) {
   });
 }
 
-function createImageFromMap( newMap ) {
-  var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x400&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk&markers=color:red"
+function createImageFromMap(newMap) {
+  var paths = "&path=color:0xff0000ff|weight:5";
   var geocoder = new google.maps.Geocoder();
 
-  var placeIDs = [];
-  cols.forEach( col => {
-    placeId = col.getAttribute("id")
-    placeIDs.push(placeId)
+  function getPlaceIDs(cols) {
+    var placeIDs = [];
+    return new Promise((res, rej) => {
+      cols.forEach((col, index, array) => {
+        placeId = col.getAttribute("id")
+        placeIDs.push(placeId)
+        if (index == array.length - 1) res(placeIDs)
+      })
+    })
+  }
+
+  getPlaceIDs(cols).then((placeIDs) => {
+    console.log(placeIDs)
+    updateURL(placeIDs).then(urls => {
+      imageURL += paths;
+      newMap.image = imageURL;
+      newMap.city = city;
+      console.log("newMap: ", newMap)
+    })
   })
 
-  placeIDs.forEach( place => {
-    geocodePlaceID(geocoder, place)
-  })
-
-  // path=pathStyles|pathLocation1|pathLocation2|
-  function geocodePlaceID(geocoder, placeID) {
-    geocoder.geocode({'placeId': placeID}, function(results, status) {
-      if (status === 'OK') {
-        var lat = results[0].geometry.location.lat()
-        var lng = results[0].geometry.location.lng()
-        console.log(`${lat}, ${lng}`)
-        var latlng = `|${lat}, ${lng}`
-        imageURL += latlng
-        console.log("imageURL: ", imageURL)
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+  function updateURL(placeIDs) {
+    return new Promise((resolve, reject) => {
+      function recurs(index) {
+        geocodePlaceID(geocoder, placeIDs[index]).then(res => {
+          console.log("turn number", index)
+          index++;
+          if (index < placeIDs.length) recurs(index);
+          else {console.log("yay"); return resolve()}
+        })
       }
+      recurs(0)
+    })
+  }
+
+  function geocodePlaceID(geocoder, placeID) {
+    return new Promise((resolve, reject) => {
+      geocoder.geocode({ 'placeId': placeID }, function (results, status) {
+        if (status === 'OK') {
+          var lat = results[0].geometry.location.lat()
+          var lng = results[0].geometry.location.lng()
+          var latlng = `|${lat}, ${lng}`
+          imageURL += latlng
+          paths += latlng
+          resolve();
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      })
     })
   }
 }
-
-// FINALIZE MAP
-finalizeButton.onclick = () => {
-  createImageFromMap(newMap);
-  console.log("created image ^")
-  submitMapInput.setAttribute("value", JSON.stringify(newMap))
-  window.confirm("ready to submit?")
-  // enable submit button
-}
-
 
 // new map with places
 function initialize() {
@@ -199,13 +219,13 @@ function initialize() {
     function setMarkerForm(infowindow, place, placeID) {
       return new Promise((res, rej) => {
         infowindow.setContent(`<form action="/addPlace" method="POST" class="place-details" id="add-${placeID}"><strong>` + place.name + '</strong><br>' +
-        // 'Place ID: ' + place.place_id + '<br>' +
-        place.formatted_address + '<br>' +
-        place.rating + '<br>' +
-        `<button type="submit">Add Stop</button></form>` +
-        '</div>');
+          // 'Place ID: ' + place.place_id + '<br>' +
+          place.formatted_address + '<br>' +
+          place.rating + '<br>' +
+          `<button type="submit">Add Stop</button></form>` +
+          '</div>');
         res();
-      }) 
+      })
     }
 
     places.forEach(place => {
@@ -216,7 +236,7 @@ function initialize() {
             google.maps.event.addListener(marker, 'click', function () {
               infowindow.open(map, this);
               setMarkerForm(infowindow, places[index], placeID).then(res => {
-                var addForms = document.querySelectorAll(".place-details");addForms.forEach( form => form.onsubmit = function(event) {
+                var addForms = document.querySelectorAll(".place-details"); addForms.forEach(form => form.onsubmit = function (event) {
                   event.preventDefault();
                   addPlaceToList(placeID, places[index].name)
 
@@ -242,7 +262,7 @@ function initialize() {
   // DIRECTIONS
   directionsDisplay.setMap(map);
 
-  document.getElementById('update-directions').addEventListener('click', function() {
+  document.getElementById('update-directions').addEventListener('click', function () {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
 }
@@ -250,14 +270,14 @@ function initialize() {
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var stopsList = document.querySelectorAll(".draggable")
   var origin = placeDivToEndpoint(stopsList[0])
-  var destination = placeDivToEndpoint(stopsList[stopsList.length-1])
+  var destination = placeDivToEndpoint(stopsList[stopsList.length - 1])
   // console.log("stopsList[0] is: ", stopsList[0])
   // console.log("stopsList[stopsList.length-1] ", stopsList[stopsList.length-1])
   // var waypts = [{location: {'placeId': "ChIJHTQ2_qWMGGARK_lj8y-fYRE"}},
-	// 		{location: {'placeId': "ChIJCzp6MKGMGGARHw84njJix8c"}}];
+  // 		{location: {'placeId': "ChIJCzp6MKGMGGARHw84njJix8c"}}];
   var waypts = [];
-  stopsList.forEach( (divElem, index) => {
-    if (index>0 && index < (stopsList.length -1)) {
+  stopsList.forEach((divElem, index) => {
+    if (index > 0 && index < (stopsList.length - 1)) {
       // console.log("new stop: ", divElem)
       waypoint = placeDivToWaypoint(divElem)
       waypts.push(waypoint);
@@ -267,7 +287,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
   var placeNames = document.querySelectorAll(".list-name")
   var places = [];
-  placeNames.forEach( (divElem, index) => {
+  placeNames.forEach((divElem, index) => {
     place = placeDivToPlaceName(divElem)
     places.push(place);
   })
@@ -283,15 +303,15 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   newMap.places = places;
   newMap.total_stops = places.length;
 
-  directionsService.route(newMap.map, function(response, status) {
+  directionsService.route(newMap.map, function (response, status) {
     if (status === 'OK') {
       directionsDisplay.setDirections(response);
       var totalTime = 0;
-      response.routes[0].legs.forEach( leg => {
+      response.routes[0].legs.forEach(leg => {
         totalTime += leg.duration.value
       })
 
-      var timeInMinutes = Math.round(totalTime/60)
+      var timeInMinutes = Math.round(totalTime / 60)
       timeDisplay.textContent = timeInMinutes;
       newMap.total_time = timeInMinutes;
     } else {
@@ -374,7 +394,15 @@ function addDnDHandlers(elem) {
   elem.addEventListener('dragleave', handleDragLeave, false);
   elem.addEventListener('drop', handleDrop, false);
   elem.addEventListener('dragend', handleDragEnd, false);
-
 }
 
+// FINALIZE MAP
+finalizeButton.onclick = () => {
+  createImageFromMap(newMap)
+  window.confirm("ready to submit?")
+  // enable submit button
+}
 
+submitMapButton.onclick = () => {
+  submitMapInput.setAttribute("value", JSON.stringify(newMap))
+}

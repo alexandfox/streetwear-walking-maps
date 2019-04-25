@@ -14,7 +14,7 @@ const app = express();
 const mapModel = require("./models/map");
 
 mongoose
-  .connect("mongodb://heroku_f1kpvc27:tpqbnaqmr82v3t0ig0d0augd7o@ds147436.mlab.com:47436/heroku_f1kpvc27", {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
   })
   .then(x => {

@@ -4,6 +4,9 @@ const timeDisplay = document.getElementById("total-time")
 const finalizeButton = document.getElementById("finalize-button")
 const submitMapInput = document.getElementById("submit-map-input")
 
+var cols = document.querySelectorAll('#places-list .column');
+[].forEach.call(cols, addDnDHandlers);
+
 var newMap = {
   map: {},
   user: "5cc043158151450c84757422",
@@ -29,7 +32,7 @@ function addPlaceToList(placeID, placeName) {
   var newPlace = document.createElement("li")
   newPlace.setAttribute("class", "column draggable")
   newPlace.setAttribute("id", placeID)
-  newPlace.textContent = placeName
+  newPlace.innerHTML = `<header class="list-name">${placeName}</header>`
   placesList.appendChild(newPlace)
 }
 
@@ -139,6 +142,8 @@ function initialize() {
                 var addForms = document.querySelectorAll(".place-details");addForms.forEach( form => form.onsubmit = function(event) {
                   event.preventDefault();
                   addPlaceToList(placeID, places[index].name)
+                  cols = document.querySelectorAll('#places-list .column');
+                  [].forEach.call(cols, addDnDHandlers);
                 })
               })
             })
@@ -292,8 +297,7 @@ function addDnDHandlers(elem) {
   elem.addEventListener('dragend', handleDragEnd, false);
 
 }
-var cols = document.querySelectorAll('#places-list .column');
-[].forEach.call(cols, addDnDHandlers);
+
 
 
 // FINALIZE MAP

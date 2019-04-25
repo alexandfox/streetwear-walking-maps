@@ -21,17 +21,14 @@ router.post("/create", (req, res, next) => {
 
   const newMapDoc = JSON.parse(req.body.newMap)
   MapModel.create(newMapDoc)
-    .then( res => {
-      console.log("res = ", res)
-      console.log("res.body = ", res.body)
-      res.render(`/map/${res.body._id}`)
+    .then( mapData => {
+      res.redirect(`/map/${mapData._id}`)
     })
     .catch( err => {
       console.log("error: ", err)
       next(err)
     })
 })
-
 
 router.get("/map", (req, res, next) => {
   res.render("map"); // pass map info

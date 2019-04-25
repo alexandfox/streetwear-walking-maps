@@ -1,3 +1,6 @@
+// set city
+const city = window.prompt("what city do you want to explore?", "Tokyo")
+
 // DOM objects
 const placesList = document.getElementById("places-list")
 const timeDisplay = document.getElementById("total-time")
@@ -66,21 +69,33 @@ function updateRemoveButtons() {
   })})
 }
 
+function geocodeAddress(geocoder, resultsMap) {
+  geocoder.geocode({'address': city}, function(results, status) {
+    console.log("geocode result: ", results)
+    console.log("lat/lng: ", results[0].geometry.location)
+    if (status === 'OK') {
+      resultsMap.setCenter(results[0].geometry.location);
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+
 // new map with places
 function initialize() {
-  const ironhackBCN = {       // update to user's city
-    lat: 41.3977381,
-    lng: 2.190471916
-  };
-
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
+
   var markers = [];
   var map = new google.maps.Map(document.getElementById('new-map'),
     {
       zoom: 5,
-      center: ironhackBCN
+      center: city
     });
+
+  var geocoder = new google.maps.Geocoder();
+  geocodeAddress(geocoder, map);
 
   var defaultBounds = new google.maps.LatLngBounds(
     new google.maps.LatLng(-33.8902, 151.1759),
@@ -247,7 +262,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
-
 
 // REORDER ITEMS
 var dragSrcEl = null;

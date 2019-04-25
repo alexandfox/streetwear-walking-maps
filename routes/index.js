@@ -15,6 +15,21 @@ router.get("/create", (req, res, next) => {
   res.render("create"); // pass city and user info
 });
 
+router.post("/create", (req, res, next) => {
+  console.log(req.body)
+  // req.body.newMap.user = {}  --> need to add user info
+
+  const newMapDoc = JSON.parse(req.body.newMap)
+  MapModel.create(newMapDoc)
+    .then( mapData => {
+      res.redirect(`/map/${mapData._id}`)
+    })
+    .catch( err => {
+      console.log("error: ", err)
+      next(err)
+    })
+})
+
 router.get("/map", (req, res, next) => {
   res.render("map"); // pass map info
 });
@@ -24,7 +39,7 @@ router.get("/map/:id", (req, res, next) => {
   if (!/^[0-9a-fA-F]{24}$/.test(mapID)) {
     return res.status(404).render("not-found");
   }
-  Map.findOne({ _id: mapID })
+  MapModel.findOne({ _id: mapID })
     .populate("user")
     .then(map => {
       if (!map) {

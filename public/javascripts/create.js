@@ -97,7 +97,6 @@ function initialize() {
   // pick list. Retrieve the matching places for that item.
   google.maps.event.addListener(searchBox, 'places_changed', function () {
     var places = searchBox.getPlaces();
-
     if (places.length == 0) {
       return;
     }
@@ -105,9 +104,17 @@ function initialize() {
       marker.setMap(null);
     }
 
+    var bounds = null;
+    if (cols.length == 0) {
+      bounds = new google.maps.LatLngBounds();
+    } else {
+      bounds = map.getBounds();
+    }
+
     // For each place, get the icon, place name, and location.
     markers = [];
-    var bounds = new google.maps.LatLngBounds();
+    // var bounds = new google.maps.LatLngBounds();
+    // var bounds = map.getBounds();
     for (var i = 0, place; place = places[i]; i++) {
       var image = {
         url: place.icon,
@@ -202,8 +209,9 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   })
 
+  var placeNames = document.querySelectorAll(".list-name")
   var places = [];
-  stopsList.forEach( (divElem, index) => {
+  placeNames.forEach( (divElem, index) => {
     place = placeDivToPlaceName(divElem)
     places.push(place);
   })

@@ -398,6 +398,9 @@ function addDnDHandlers(elem) {
 
 // FINALIZE MAP
 finalizeButton.onclick = () => {
+  var guideNotes = document.getElementById("guide-notes").value
+  console.log("guidenotes: ", guideNotes)
+  newMap.guide_notes = guideNotes
   createImageFromMap(newMap)
   window.confirm("ready to submit?")
   // enable submit button

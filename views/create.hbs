@@ -1,27 +1,35 @@
-<p>what's up</p>
-<input id="search-place-input" class="controls" type="text" placeholder="Search Shops">
 <div class="map" id="new-map"></div>
+<input id="search-place-input" class="controls" type="text" placeholder="Search Shops">
 
-<div id="directions-container">
-	<h3 class="listHeading">Route</h3>
-	<p>Total Walking Time: <span id="total-time">0</span> min</p>
-	<button id="update-directions">Update Route</button>
+<div id="create-body">
+	<div id="places-container">
+		<h2 class="listHeading">Route</h2>
+		<ul id="places-list" class="draggable-list">
+			<li class="column draggable" id="ChIJHTQ2_qWMGGARK_lj8y-fYRE"><header class="list-name">GIP Store</header><span class="removeStop">x</span></li>
+			<li class="column draggable" id="ChIJCzp6MKGMGGARHw84njJix8c"><header class="list-name">Ambush Workshop</header><span class="removeStop">x</span></li>
+			<li class="column draggable" id="ChIJU9Ydb2GLGGAR5UIVmYONRiU"><header class="list-name">Cav Empt</header><span class="removeStop">x</span></li>
+			<li class="column draggable" id="ChIJ83ZdS2CLGGAREqhGUhmJ9pM"><header class="list-name">Off White</header><span class="removeStop">x</span></li>
+		</ul>
+	</div>
+
+	<div id="update-container">
+		{{!-- <h2 class="listHeading">Route</h3> --}}
+		<div id="route-details">
+			<div class="createText">Total Walking Time: <span id="total-time">0</span>min</div>
+			<button class="createButton" id="update-directions">Update Route</button>
+		</div>
+	</div>
+
+	<h2 class="listHeading">Details</h2>
+	<form id="save-map-container" action="/create" method="POST">
+		<label for="guideNotes">Guide Notes</label>
+		<input type="areatext" id="guide-notes" name="guideNotes" placeholder="What should people know about your map?">
+		<input id="submit-map-input" name="newMap" type="hidden" value="">
+		<div id="submitButtons">
+			<button class="createButton" id="finalize-button" type="button">Finalize</button>
+			<input class="createButton" id="save-map" type="submit" value="Submit">
+		</div>
+	</form>
 </div>
-
-<div id="places-container">
-	<h3 class="listHeading">Stops</h3>
-	<ul id="places-list" class="draggable-list">
-		<li class="column draggable" id="ChIJHTQ2_qWMGGARK_lj8y-fYRE"><header class="list-name">GIP Store</header><span class="removeStop">x</span></li>
-		<li class="column draggable" id="ChIJCzp6MKGMGGARHw84njJix8c"><header class="list-name">Ambush Workshop</header><span class="removeStop">x</span></li>
-		<li class="column draggable" id="ChIJU9Ydb2GLGGAR5UIVmYONRiU"><header class="list-name">Cav Empt</header><span class="removeStop">x</span></li>
-		<li class="column draggable" id="ChIJ83ZdS2CLGGAREqhGUhmJ9pM"><header class="list-name">Off White</header><span class="removeStop">x</span></li>
-	</ul>
-</div>
-
-<form id="save-map-container" action="/create" method="POST">
-	<input id="submit-map-input" name="newMap" type="hidden" value="">
-	<button id="finalize-button" type="button">Finalize</button>
-	<input id="save-map" type="submit" value="Submit">
-</form>
 
 <script src="/javascripts/create.js"></script>

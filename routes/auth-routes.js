@@ -52,9 +52,7 @@ passport.authenticate("local", {
 });
 passport.authenticate("local", { successFlash: "Welcome!" });
 
-authRoutes.post(
-  "/login",
-  passport.authenticate("local", {
+authRoutes.post("/login", passport.authenticate("local", {
     successRedirect: "/",
     successFlash: true,
     failureRedirect: "/login",

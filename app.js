@@ -15,9 +15,10 @@ const mapModel = require("./models/map");
 const flash = require("connect-flash"); //beginning
 
 // process.env.MONGODB_URI
+// mongodb://localhost/streetwear-walking-maps
 
 mongoose
-  .connect("mongodb://localhost/streetwear-walking-maps", {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
   })
   .then(x => {

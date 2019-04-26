@@ -7,7 +7,7 @@ const User = require("../models/user")
 const db = "mongodb://localhost/streetwear-walking-maps";
 
 router.get("/", (req, res, next) => {
-  MapModel.find()
+  MapModel.find({}, null, { sort: {total_favorites: -1 }})
     .populate("user")
     .then(mapData => {
       res.render("index", { mapData });
@@ -69,6 +69,7 @@ router.get("/map/:id", (req, res, next) => {
     })
     .catch(next);
 });
+
 
 // const createMap = require('./create');
 // app.use('/create', createMap);

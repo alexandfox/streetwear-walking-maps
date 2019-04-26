@@ -18,6 +18,23 @@ router.get("/create", (req, res, next) => {
   res.render("create"); // pass city and user info
 });
 
+router.get("/create/:id", (req, res, next) => {
+  let mapID = req.params.id;
+  if (!/^[0-9a-fA-F]{24}$/.test(mapID)) {
+    return res.status(404).render("not-found");
+  }
+  MapModel.findOne({ _id: mapID })
+    .populate("user")
+    .then(map => {
+      if (!map) {
+        return res.status(404).render("not-found");
+      }
+      console.log("here i am in the create roupe, here is the map: ", map)
+      res.render('create', {hbsMap: map, cloneMap: JSON.stringify(map)})
+    })
+    .catch(next);
+});
+
 router.post("/create", (req, res, next) => {
   console.log(req.body)
   // req.body.newMap.user = {}  --> need to add user info

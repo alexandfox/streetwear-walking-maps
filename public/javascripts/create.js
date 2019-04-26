@@ -7,6 +7,7 @@ const timeDisplay = document.getElementById("total-time")
 const finalizeButton = document.getElementById("finalize-button")
 const submitMapInput = document.getElementById("submit-map-input")
 
+const cloneInput = document.getElementById("cloned-map")
 const submitMapButton = document.getElementById("save-map")
 
 var removeButtons = document.querySelectorAll(".removeStop");
@@ -15,6 +16,7 @@ var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x300&key=
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);
 
+// handle for if there is a clone
 var newMap = {
   map: {},
   user: "5cc043158151450c84757422",
@@ -35,6 +37,7 @@ var newMap = {
   local_rank: null,
   global_rank: null,
 };
+
 
 function addPlaceToList(placeID, placeName) {
   var newPlace = document.createElement("li")
@@ -267,6 +270,22 @@ function initialize() {
   });
 }
 
+function displayClone(directionsService, directionsDisplay) {
+    // get clone
+  const cloneJSON = document.getElementById("cloned-map").value;
+	const cloneObject = JSON.parse(cloneJSON)
+
+  directionsService.route(cloneObject.map, function(response, status) {
+		if (status === 'OK') {
+			directionsDisplay.setDirections(response);
+			var route = response.routes[0];
+			console.log("nice")
+		} else {
+			window.alert('Directions request failed due to ' + status);
+		}
+	});
+}
+
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var stopsList = document.querySelectorAll(".draggable")
   var origin = placeDivToEndpoint(stopsList[0])
@@ -322,7 +341,25 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   updateRemoveButtons();
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', handleClones);
+
+function handleClones() {
+  if (cloneInput.value != "") {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var displayMap = new google.maps.Map(document.getElementById('new-map'), {
+      zoom: 6,
+      center: {lat: 41.85, lng: -87.65}
+    });
+    directionsDisplay.setMap(displayMap);
+    displayClone(directionsService, directionsDisplay)
+    console.log(cloneInput.value)
+  } else {
+    initialize()
+  }
+}
+
+
 
 // REORDER ITEMS
 var dragSrcEl = null;

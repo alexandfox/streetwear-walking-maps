@@ -353,10 +353,23 @@ function handleClones() {
     });
     directionsDisplay.setMap(displayMap);
     displayClone(directionsService, directionsDisplay)
-    console.log(cloneInput.value)
+    loadClonePlaces()
   } else {
     initialize()
   }
+}
+
+function loadClonePlaces() {
+  const cloneJSON = document.getElementById("cloned-map").value;
+	const cloneObject = JSON.parse(cloneJSON)
+
+  console.log(cloneObject)
+  var originID = cloneObject.map.origin.placeId
+  var destinationID = cloneObject.map.destination.placeId
+  var waypointIDs = []
+
+  addPlaceToList(originID, cloneObject.places[0])
+  addPlaceToList(destinationID, cloneObject.places[cloneObject.places.length-1])
 }
 
 

@@ -4,22 +4,54 @@
     <input type="text" name="Paris">
     <p>Or look for maps <button>Near You!!</button></p>
 </div> --}}
-<div class="main_homePage">
-    <h2>Most popular maps of all time!</h2>
+
+<h2 id="title">Most popular maps of all time!</h2>
+<div id="maps-list">
     {{#each mapData}}
-        <div class="list-item">
-            <a href="/map/{{this._id}}"><img src="{{ this.image}}"></a>    
-            <div class="list-info">
-                <h1 class="list-city">{{this.city}}</h1>
-                <h3 class="list-time">Total time: {{this.total_time}} min.</3>
-                <p>Stops: {{this.total_stops}}</p>
-                <p>Places: {{this.places}}</p>
-                <div class="list-favorites">
-                    <i class="far fa-heart"> {{this.total_favorites}}</i>
-                    <p class="favorites-count"> </p>
+        <div class="listItem">
+            <div class="listImage"><a href="/map/{{this._id}}"><img src="{{ this.image}}"></a></div>
+            <div class="listInfo">
+                <div class="location">
+                    <div class="listCity">{{this.city}}</div>
+                    <div class="listNeighborhood">{{this.neighborhood}}</div>
                 </div>
-                <p>Creator: {{this.user.username}}</p>
-            </div>            
+                <div class="details">
+                    <div class="listKey">Total time: <span class="listValue">{{this.total_time}} min.</span></div>
+                    <div class="listKey">Total stops: <span class="listValue">{{this.total_stops}}</span></div>
+                    <div class="listKey">Places visited: <span class="listValue">{{this.places}}</span></div>
+                </div>
+                <div class="userDetails">
+                    <div class="list-favorites">
+                        <i class="far fa-heart"> {{this.total_favorites}}</i>
+                        <p class="favorites-count"> </p>
+                    </div>
+                    <div class="listKey">Creator: <span class="listValue"><a href="#">{{this.user.username}}</a></span></div>
+                </div>
+            </div>
         </div>
     {{/each}}
 </div>
+
+
+{{!-- <div class="main_homePage">
+    <h2 id="title">Most popular maps of all time!</h2>
+    <div id="maps-list">
+        {{#each mapData}}
+            <div class="listItem">
+                <div></div>   
+                <div class="list-info">
+                    <h1 class="list-city">{{this.city}}</h1>
+                    <div class="listNeighborhood">{{this.neighborhood}}</div>
+                    <div class="listKey">Total time: <span class="list-time listValue">{{this.total_time}} min.</span><div>
+                    <div class="listKey">Total stops: <span class="listValue">{{this.total_stops}}</span></div>
+                    <div class="listKey">Places visited: <span class="listValue">{{this.places}}</span></div>
+                    <div class="list-favorites">
+                        <i class="far fa-heart"> {{this.total_favorites}}</i>
+                        <p class="favorites-count"> </p>
+                    </div>
+                    <div class="listKey">Creator: <span class="listValue">{{this.user.username}}</span></div>
+                </div>            
+            </div>
+        {{/each}}
+    </div>
+</div> --}}

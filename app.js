@@ -17,7 +17,7 @@ const flash = require("connect-flash"); //beginning
 // process.env.MONGODB_URI
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect("mongodb://localhost/streetwear-walking-maps", {
     useNewUrlParser: true
   })
   .then(x => {

@@ -1,23 +1,79 @@
+* {
+  font-family: "Helvetica";
+}
+
+#title {
+  margin: 80px 0 20px 50px;
+}
+
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  /* padding: 50px; */
+  padding: 0;
+  margin: 0;
+  font: 14px Arial, sans-serif; 
+}
 
 a {
   color: #00b7ff; }
 
-.list-item {
-  display: flex;
-  padding: 15px 0;
+.listCity {
+  font-size: 32px;
+  font-family: "Helvetica";
 }
 
-.list-info {
+.listKey {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 3px 0;
+}
+
+.listNeighborhood {
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 0;
+}
+
+.listValue {
   padding: 0 0 0 20px;
+  font-weight: 400;
 }
 
+#maps-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  display: flex;
+  padding: 15px 0 15px 50px;
+}
+
+.listInfo {
+  padding: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  justify-content: space-between;
+}
 
 .map {
   width: 100%;
   height: 400px; }
+
+#view-details {
+  padding: 20px 0 0 50px;
+}
+
+#guide-notes {
+  padding: 40px 0;
+}
+
+#view-stops {
+  padding: 20px 0;
+}
+
+
 
 #search-place-input {
   background-color: #fff;

@@ -10,7 +10,7 @@ const submitMapInput = document.getElementById("submit-map-input")
 const submitMapButton = document.getElementById("save-map")
 
 var removeButtons = document.querySelectorAll(".removeStop");
-var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x400&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk&markers=color:red";
+var imageURL = "https://maps.googleapis.com/maps/api/staticmap?size=400x300&key=AIzaSyBAFajUxQ7Ltv5t9nfiaYTXvhnWbTV80bk&markers=color:red";
 
 var cols = document.querySelectorAll('#places-list .column');
 [].forEach.call(cols, addDnDHandlers);

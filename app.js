@@ -12,6 +12,9 @@ const logger = require("morgan");
 const path = require("path");
 const app = express();
 const mapModel = require("./models/map");
+const flash = require("connect-flash"); //beginning
+
+// process.env.MONGODB_URI
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -66,7 +69,14 @@ app.use(
   })
 );
 
+app.use(checkloginStatus);
+
 // ...other code
+function checkloginStatus(req, res, next) {
+  res.locals.isLoggedIn = req.isAuthenticated();
+  res.locals.user = req.user;
+  next();
+}
 
 const index = require("./routes/index");
 app.use("/", index);

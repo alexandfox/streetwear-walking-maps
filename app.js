@@ -69,6 +69,8 @@ app.use(
   })
 );
 
+app.use(checkloginStatus);
+
 // ...other code
 function checkloginStatus(req, res, next) {
   res.locals.isLoggedIn = req.isAuthenticated();

@@ -18,7 +18,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		if (status === 'OK') {
 			directionsDisplay.setDirections(response);
 			var route = response.routes[0];
-			console.log("nice")
+			console.log("response: ", response)
 		} else {
 			window.alert('Directions request failed due to ' + status);
 		}

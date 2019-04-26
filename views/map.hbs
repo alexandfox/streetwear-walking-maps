@@ -29,10 +29,13 @@
 						<i class="far fa-heart"> {{hbsMap.total_favorites}}</i>
 						<p class="favorites-count"></p>
 				</div>
+				<button id="view-openGoogle"><a href="https://www.google.com/maps/dir/50.852085,+4.354116999999974/50.8536502,+4.3553750999999465/50.8505269,+4.364239099999963/50.8396455,+4.360849499999972/50.848873,+4.346852000000013/@50.8474728,4.3474487,15z/data=!3m1!4b1!4m22!4m21!1m3!2m2!1d4.354117!2d50.852085!1m3!2m2!1d4.3553751!2d50.8536502!1m3!2m2!1d4.3642391!2d50.8505269!1m3!2m2!1d4.3608495!2d50.8396455!1m3!2m2!1d4.346852!2d50.848873!3e2" target="_blank">Open in App</a></button>
 				<button id="view-cloneButton"><a href="/create/{{hbsMap._id}}">Clone Map</a></button>
 			</div>
 		</div>
 </div>
+{{!-- 
+{{hbsMap.google_maps}} --}}
 
 
 <input id="map-object" type="hidden" value="{{ map }}">

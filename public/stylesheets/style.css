@@ -86,13 +86,14 @@ a {
   padding: 0 10px 0 0;
 }
 
-#view-cloneButton {
+#view-cloneButton, #view-openGoogle {
   font-size: 16px;
   padding: 0 10px;
   background-color: lightgrey;
   border: none;
   text-align: center;
   text-decoration: none;
+  margin: 0 20px;
 }
 
 #guide-notes {

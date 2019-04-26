@@ -11,7 +11,7 @@ body {
   /* padding: 50px; */
   padding: 0;
   margin: 0;
-  font: 14px Arial, sans-serif; 
+  font: 16px Arial, sans-serif; 
 }
 
 a {
@@ -65,6 +65,34 @@ a {
   padding: 10px 0 200px 0;
   max-width: 800px;
   margin: 0 auto;
+}
+
+#viewNotes {
+  margin: 0 0 100px 0;
+}
+
+#viewMapButtons {
+  display: flex;
+}
+
+#view-AddFavorites {
+  display: flex;
+  align-items: center;
+  padding: 0 45px 0 0;
+  align-content: center;
+}
+
+#add-favorites{
+  padding: 0 10px 0 0;
+}
+
+#view-cloneButton {
+  font-size: 16px;
+  padding: 0 10px;
+  background-color: lightgrey;
+  border: none;
+  text-align: center;
+  text-decoration: none;
 }
 
 #guide-notes {

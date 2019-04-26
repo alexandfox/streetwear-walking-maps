@@ -11,10 +11,6 @@
 			<div class="listKey">Places visited: <span class="listValue">{{hbsMap.places}}</span></div>
 		</div>
 		<div class="userDetails">
-				<div class="list-favorites">
-						<i class="far fa-heart"> {{hbsMap.total_favorites}}</i>
-						<p class="favorites-count"> </p>
-				</div>
 				<div class="listKey">Creator: <span class="listValue"><a href="#">{{hbsMap.user.username}}</a></span></div>
 				<div class="listKey">Created: <span class="listValue">{{ hbsMap.created_at }}</span></div>
     </div>
@@ -24,6 +20,18 @@
 		<h2>Guide Notes</h2>
 		<p>{{hbsMap.guide_notes}}</p>
 	</div>
+
+	<div id="view-cloneMap">
+		<p><b>Like this map?</b></p>
+		<div id="viewMapButtons">
+			<div id="view-AddFavorites">
+					<p id="add-favorites">Add to Favorites: </p>
+						<i class="far fa-heart"> {{hbsMap.total_favorites}}</i>
+						<p class="favorites-count"></p>
+				</div>
+				<button id="view-cloneButton"><a href="/create/{{hbsMap._id}}">Clone Map</a></button>
+			</div>
+		</div>
 </div>
 
 

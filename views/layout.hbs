@@ -15,17 +15,12 @@
   <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
 
-<body class="main-content">
-  {{!-- {{#if user.conected}}
-  //user not connected
-  {{>logged-in-nav}}
-  {{#else}}
-  //user not connected --}}
+<body id="container">
   {{>nav}}
-  {{!-- {{/if}} --}}
-  {{{body}}}
-
-  <script src="/javascripts/main.js"></script>
+  <div id="main-content">
+    {{{body}}}
+  </div>
+  <script src="../public/javascripts/main.js"></script>
 </body>
 
 </html>

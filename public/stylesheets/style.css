@@ -19,8 +19,9 @@ a {
   color: #00b7ff; }
 
 .listCity {
-  font-size: 32px;
+  font-size: 2.5em;
   font-family: "Helvetica";
+  font-weight: 600;
 }
 
 .listKey {
@@ -43,15 +44,18 @@ a {
 #maps-list {
   display: flex;
   flex-direction: column;
+  width: 100%
 }
 
 .listItem {
   display: flex;
-  padding: 15px 0 15px 50px;
+  flex-direction: column;
+  padding: 1em 0;
+  width: 100%;
 }
 
 .listInfo {
-  padding: 0 0 0 20px;
+  padding: 0.8em 0.8em 0;
   display: flex;
   flex-direction: column;
   max-height: 300px;
@@ -294,19 +298,21 @@ a {
 
 .main-content {
   margin: 4em 0 0;
+  width: 100%
 }
 
 @media screen and (max-width: 479px){
   .navbar {
-    height: 5em;
+    height: 4em;
   }
 
   .navbar a {
-    font-size: 2em;
+    font-size: 1.2em;
   }
 
   .main-content {
     margin: 6em 0 0;
+    width: 100%;
   }
 }
 
@@ -316,4 +322,8 @@ a {
 
 /* desktop */
 @media screen and (min-width: 640px){ 
+  .listItem {
+    flex-direction: row;
+    padding: 15px 0 15px 50px;
+  }
 }

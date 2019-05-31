@@ -8,26 +8,6 @@
 <h2 id="title">Most popular maps of all time!</h2>
 <div id="maps-list">
     {{#each mapData}}
-        <div class="listItem">
-            <div class="listImage"><a href="/map/{{this._id}}"><img src="{{ this.image}}"></a></div>
-            <div class="listInfo">
-                <div class="location">
-                    <div class="listCity">{{this.city}}</div>
-                    <div class="listNeighborhood">{{this.neighborhood}}</div>
-                </div>
-                <div class="details">
-                    <div class="listKey">Total time: <span class="listValue">{{this.total_time}} min.</span></div>
-                    <div class="listKey">Total stops: <span class="listValue">{{this.total_stops}}</span></div>
-                    <div class="listKey">Places visited: <span class="listValue">{{this.places}}</span></div>
-                </div>
-                <div class="userDetails">
-                    <div class="list-favorites">
-                        <i class="far fa-heart"> {{this.total_favorites}}</i>
-                        <p class="favorites-count"> </p>
-                    </div>
-                    <div class="listKey">Creator: <span class="listValue"><a href="#">{{this.user.username}}</a></span></div>
-                </div>
-            </div>
-        </div>
+        {{>mapListItem}}
     {{/each}}
 </div>

@@ -285,18 +285,6 @@ a {
 }
 
 
-.navbar {
-  position: fixed;
-  top: 0;
-  height: 3em;
-  width: 100%;
-  background-color: #2081c3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center; 
-  overflow: hidden;
-}
-
 .navbar a {
   margin: 0 1em;
   color: white;

@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const favicon = require("serve-favicon");
 const hbs = require("hbs");
+const sassMiddleware = require('node-sass-middleware');
+
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
@@ -47,6 +49,14 @@ app.use(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 hbs.registerPartials(__dirname + "/views/partials");
+
+app.use (
+  sassMiddleware({
+    src: __dirname + '/sass',
+    dest: __dirname + '/public',
+    debug: true,
+  })
+);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
